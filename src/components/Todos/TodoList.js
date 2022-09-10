@@ -3,10 +3,8 @@ import TodoForm from "./TodoForm";
 import TodoItem from "./TodoItem";
 
 const TodoList = ({ todos, setTodos }) => {
-  // const todos = fetch("https://631504515b85ba9b11db5f39.mockapi.io/todos").then(
-  //   (response) => response.json()
-  // );
   const [isLoading, setIsLoading] = useState(false);
+  const [httpErrorMessage, setHttpErrorMessage] = useState();
 
   useEffect(() => {
     const getTodos = async () => {
@@ -14,15 +12,29 @@ const TodoList = ({ todos, setTodos }) => {
       const response = await fetch(
         "https://631504515b85ba9b11db5f39.mockapi.io/todos"
       );
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
       const todoData = await response.json();
+
       setTodos(todoData);
       setIsLoading(false);
     };
-    getTodos();
+    getTodos().catch((error) => {
+      setIsLoading(false);
+      setHttpErrorMessage(error.message);
+    });
   }, [setTodos]);
 
   if (isLoading) {
     return <p className="text-xl mt-12 dark:text-custom-egg">Loading...</p>;
+  }
+  if (httpErrorMessage) {
+    return (
+      <p className="place-self-center mt-12 text-3xl font-semibold dark:bg-custom-egg">
+        {httpErrorMessage}
+      </p>
+    );
   }
   if (todos.length === 0) {
     return (
