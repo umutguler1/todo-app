@@ -14,7 +14,7 @@ const UsernameForm = ({ onAddUser }) => {
 
   return (
     <div className="text-center min-h-screen transition-all duration-700 dark:text-custom-egg">
-      <h3 className="text-5xl my-8">What should we call you?</h3>
+      <h3 className="text-5xl my-8 font-semibold">What should we call you?</h3>
       <form
         onSubmit={usernameFormSubmitHandler}
         className="grid gap-y-4 place-items-center"
